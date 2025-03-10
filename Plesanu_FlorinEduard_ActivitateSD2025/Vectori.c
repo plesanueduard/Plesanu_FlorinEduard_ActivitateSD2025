@@ -35,9 +35,14 @@ void afisareVector(struct Telefon* vector, int nrElemente) {
 	}
 }
 
-struct Sablon* copiazaPrimeleNElemente(struct Telefon* vector, int nrElemente, int nrElementeCopiate) {
+struct Telefon* copiazaPrimeleNElemente(struct Telefon* vector, int nrElemente, int nrElementeCopiate) {
 	struct Telefon *vectorNou=NULL;
-
+	vectorNou = (struct Telefon*)malloc(sizeof(struct Telefon) * nrElementeCopiate);
+	for (int i = 0;i < nrElementeCopiate;i++) {
+		vectorNou[i] = vector[i];	
+		vectorNou[i].producator = (char*)malloc(strlen(vector[i].producator) + 1); // de fiecare data cand avem pointer ii facem loc
+		strcpy_s(vectorNou[i].producator, strlen(vector[i].producator) + 1, vector[i].producator);
+	}
 	return vectorNou;
 }
 
@@ -64,5 +69,12 @@ int main() {
 	telefoane[1] = initializare(2, 128, "Motorola", 1000, 'M');
 	telefoane[2] = initializare(3, 512, "Huawei", 3000, 'L');
 	afisareVector(telefoane, nrTelefoane);
+
+	struct Telefon* primeleTelefoane = NULL;
+	int nrPrimeleTelefoane = 2;
+	primeleTelefoane = copiazaPrimeleNElemente(telefoane,nrTelefoane,nrPrimeleTelefoane);
+	printf("\n\n Primele telefoane: \n");
+	afisareVector(primeleTelefoane, nrPrimeleTelefoane);
+
 	return 0;
 }
