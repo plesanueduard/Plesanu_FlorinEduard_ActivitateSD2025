@@ -74,6 +74,21 @@ Masina* citireVectorMasiniFisier(const char* numeFisier, int* nrMasiniCitite) {
 	return masini;
 }
 
+float pretMediuDupaNrUsi(Masina* vector, int nrMasini, int nrUsi) {
+	float suma = 0;
+	float index = 0;
+	for (int i = 0;i < nrMasini;i++) {
+		if (vector[i].nrUsi == nrUsi) {
+			suma += vector[i].pret;
+			index++;
+		}
+	}
+	if (index > 0) {
+		return suma / index;
+	}
+	return 0;
+}
+
 void dezalocareVectorMasini(Masina** vector, int* nrMasini) {
 	for (int i = 0;i < nrMasini;i++) {
 		free((*vector)[i].model);
@@ -89,6 +104,8 @@ int main() {
 	int nrMasini = 0;
 	masini = citireVectorMasiniFisier("Masini.txt",&nrMasini);
 	afisareVectorMasini(masini, nrMasini);
+	float medie = pretMediuDupaNrUsi(masini, nrMasini, 6);\
+		printf("Media masinilor este:%.2f ",medie);
 	dezalocareVectorMasini(&masini, &nrMasini);
 	return 0;
 }
