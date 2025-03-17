@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<malloc.h>
-
+#define CRT_SECURE_NO_WARNINGS_
 
 struct Telefon {
 	int id;
@@ -47,9 +47,40 @@ struct Telefon* copiazaPrimeleNElemente(struct Telefon* vector, int nrElemente, 
 	return vectorNou;
 }
 
+
+
+void copiazaTelefoaneScumpe(struct Telefon* vector, char nrElemente, float pretMinim, struct Telefon** vectorNou, int* dimensiune) {
+	*dimensiune = 0;
+	for (int i = 0;i < nrElemente;i++) {
+		if (vector[i].pret >= pretMinim) {
+			(*dimensiune)++;
+		}
+	}
+	if ((*vectorNou) != NULL) {
+		free(vectorNou);
+	}
+	*vectorNou = (struct Telefon*)malloc(sizeof(struct Telefon) * (*dimensiune));
+	int k = 0;
+	for (int i = 0;i < nrElemente;i++) {
+		if (vector[i].pret >= pretMinim) {
+			(*vectorNou)[k] = vector[i];
+			(*vectorNou)[k].producator = (char*)malloc(strlen(vector[i].producator) + 1);
+			strcpy_s((*vectorNou)[k].producator, strlen(vector[i].producator) + 1, vector[i].producator);
+			k++;
+		}
+	}
+}
+
+struct Telefon getPrimulElementConditionat(struct Telefon* vector, int nrElemente, const char* conditie) {
+	struct Telefon t;
+	t.id = 1;
+
+	return t;
+}
+
 void dezalocare(struct Telefon** vector, int* nrElemente) {
 	int i = 0;
-	for (i=0;i < (*nrElemente);i++);
+	for (i = 0;i < (*nrElemente);i++)
 	{
 		if ((*vector)[i].producator != NULL) {
 			free((*vector)[i].producator);
@@ -60,18 +91,6 @@ void dezalocare(struct Telefon** vector, int* nrElemente) {
 	*nrElemente = 0;
 }
 
-void copiazaAnumiteElemente(struct Telefon* vector, char nrElemente, float prag, struct Telefon** vectorNou, int* dimensiune) {
-
-}
-
-struct Telefon getPrimulElementConditionat(struct Telefon* vector, int nrElemente, const char* conditie) {
-	struct Telefon t;
-	t.id = 1;
-
-	return t;
-}
-	
-
 
 int main() {
 	struct Telefon* telefoane=NULL;
@@ -79,15 +98,22 @@ int main() {
 	telefoane = (struct Telefon*)malloc(sizeof(struct Telefon) * nrTelefoane);
 	telefoane[0] = initializare(1, 256, "Samsung", 2000, 'S');
 	telefoane[1] = initializare(2, 128, "Motorola", 1000, 'M');
-	telefoane[2] = initializare(3, 512, "Huawei", 3000, 'L');
+	telefoane[2] = initializare(3, 512, "Huawei", 2200, 'L');
 	afisareVector(telefoane, nrTelefoane);
 
 	struct Telefon* primeleTelefoane = NULL;
 	int nrPrimeleTelefoane = 2;
+
 	primeleTelefoane = copiazaPrimeleNElemente(telefoane,nrTelefoane,nrPrimeleTelefoane);
 	printf("\n\n Primele telefoane: \n");
 	afisareVector(primeleTelefoane, nrPrimeleTelefoane);
 	dezalocare(&primeleTelefoane,&nrPrimeleTelefoane);
 	afisareVector(primeleTelefoane, nrPrimeleTelefoane);
+
+	struct Telefon* telefoaneScumpe=NULL;
+	int nrTelefoaneScumpe = 0;
+	copiazaTelefoaneScumpe(telefoane, nrTelefoane, 1000, &telefoaneScumpe, &nrTelefoaneScumpe);
+	printf("\n\nTelefoane scumpe:\n");
+	afisareVector(telefoaneScumpe, nrTelefoaneScumpe);
 	return 0;
 }
