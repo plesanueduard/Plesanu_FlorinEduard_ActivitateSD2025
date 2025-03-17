@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<malloc.h>
 
+
 struct Telefon {
 	int id;
 	int RAM;
@@ -47,9 +48,20 @@ struct Telefon* copiazaPrimeleNElemente(struct Telefon* vector, int nrElemente, 
 }
 
 void dezalocare(struct Telefon** vector, int* nrElemente) {
+	int i = 0;
+	for (i=0;i < (*nrElemente);i++);
+	{
+		if ((*vector)[i].producator != NULL) {
+			free((*vector)[i].producator);
+		}
+	}
+	free(*vector);
+	*vector = NULL;
+	*nrElemente = 0;
 }
 
 void copiazaAnumiteElemente(struct Telefon* vector, char nrElemente, float prag, struct Telefon** vectorNou, int* dimensiune) {
+
 }
 
 struct Telefon getPrimulElementConditionat(struct Telefon* vector, int nrElemente, const char* conditie) {
@@ -75,6 +87,7 @@ int main() {
 	primeleTelefoane = copiazaPrimeleNElemente(telefoane,nrTelefoane,nrPrimeleTelefoane);
 	printf("\n\n Primele telefoane: \n");
 	afisareVector(primeleTelefoane, nrPrimeleTelefoane);
-
+	dezalocare(&primeleTelefoane,&nrPrimeleTelefoane);
+	afisareVector(primeleTelefoane, nrPrimeleTelefoane);
 	return 0;
 }
