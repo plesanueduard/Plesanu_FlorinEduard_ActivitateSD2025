@@ -150,13 +150,33 @@ void dezalocareListaMasini(Nod** cap) {
 	}
 }
 
+char* getCeaMaiScumpaMasina(Nod* lista) {
+	float pretulMax=0;
+	char* modelScump=NULL;
+	while (lista) {
+		if (lista->info.pret > pretulMax) {
+			pretulMax = lista->info.pret;
+			modelScump = lista->info.model;
+		}
+		lista = lista->urm;
+	}
+	if (pretulMax > 0) {
+		char* nou = malloc(strlen(modelScump) + 1);
+		strcpy_s(nou, strlen(modelScump) + 1, modelScump);
+		return nou;
+	}
+	return NULL;
+}
+
 int main() {
 	//adresa primului nod
 	Nod* cap = NULL;
 	cap = citireListaMasiniDinFisier("masini.txt");
 	afisareListaMasini(cap);
 	printf("%.2f \n",calculeazaPretMediu(cap));
-	printf("%.2f",calculeazaPretulMasinilorUnuiSofer(cap,"Ionescu"));
+	printf("%.2f \n",calculeazaPretulMasinilorUnuiSofer(cap,"Ionescu"));
+	printf("%s", getCeaMaiScumpaMasina(cap));
+
 	dezalocareListaMasini(&cap);
 
 	return 0;
